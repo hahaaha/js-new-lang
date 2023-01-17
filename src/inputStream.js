@@ -28,7 +28,6 @@ export const inputStream = (input) => {
 
     function eof() {
         const ch = peek()
-        console.log(ch)
         return ch == "";
     }
 }
