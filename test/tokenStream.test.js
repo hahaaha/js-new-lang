@@ -2,8 +2,8 @@ import assert from "assert"
 import { inputStream } from "../src/inputStream.js"
 import { tokenStream } from "../src/tokenStream.js"
 
-function createTokStream  (content) {
-    const input = content 
+function createTokStream(content) {
+    const input = content
     const stream = inputStream(input)
     const tokStream = tokenStream(stream)
     return tokStream
@@ -92,8 +92,30 @@ describe('tokenStream test', () => {
     })
 
     it('test op mul', () => {
-        const tokenStream = createTokStream('+= 1')
-        assert.deepEqual(tokenStream.next(), { type: 'op', value: '+=' })
+        const tokStream = createTokStream('+= 1')
+        assert.deepEqual(tokStream.next(), { type: 'op', value: '+=' })
+    })
+
+    describe('token peek', () => {
+        it('token peek null', () => {
+            const tokenStream = createTokStream('  ')
+            assert.equal(tokenStream.peek(), null)
+        })
+
+        it('token peek normal', () => {
+            const tokenStream = createTokStream('"abc"')
+            assert.deepEqual(tokenStream.peek(), { type: 'str', value: 'abc' })
+        })
+    })
+
+    it('token eof true', () => {
+        const tokStream = createTokStream('  ')
+        assert.equal(tokStream.eof(), true)
+    })
+
+    it('token eof false', () => {
+        const tokStream = createTokStream(' a')
+        assert.equal(tokStream.eof(), false)
     })
 
 })

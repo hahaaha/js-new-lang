@@ -5,6 +5,9 @@ export const tokenStream = (inputStream) => {
     const keywords = " if then else lambda true false λ "
     return {
         next,
+        peek,
+        eof,
+        croak: inputStream.croak
     }
     function next() {
         let tok = current
@@ -104,5 +107,13 @@ export const tokenStream = (inputStream) => {
             }
         }
         return str
+    }
+
+    function peek() {
+        return current || (current = read_next())
+    }
+
+    function eof() {
+        return peek() == null
     }
 }
